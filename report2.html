@@ -63,12 +63,6 @@
         // シーンに追加
         scene.add(directionalLight2);
 
-        // helper
-        const gridHelper = new THREE.GridHelper(2, 10); // size, step
-        scene.add(gridHelper);
-        const axisHelper = new THREE.AxisHelper(2); //軸の長さ　X：赤、Y：緑、z：青
-        scene.add(axisHelper);
-
         // 星をスプライトで作成
         var textureLoader = new THREE.TextureLoader();  
         var texture = textureLoader.load("star.png");
@@ -77,7 +71,7 @@
         // 星位置
         const sprite1 = new THREE.Sprite(material);
         sprite1.scale.set(0.5, 0.8, 0.5);
-        sprite1.position.set(0, 1.5, 0); //位置を指定
+        sprite1.position.set(0, 1.7, 0); //位置を指定
         scene.add(sprite1);
 
         update();
