@@ -1,0 +1,94 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="https://unpkg.com/three@0.137.4/build/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.137.4/examples/js/controls/OrbitControls.js"></script>
+  </head>
+<body>
+ <h1>板ポリにテクスチャ―</h1>
+ 板ポリにテクスチャ―貼ってみた<br>
+ 非透過と透過
+ <script>
+      // ページの読み込みを待つ
+      window.addEventListener('DOMContentLoaded', init);
+
+      function init() {
+        // サイズを指定
+        const width = 800;
+        const height = 600;
+
+        // レンダラーを作成
+        var renderer = new THREE.WebGLRenderer();
+        document.body.appendChild(renderer.domElement);
+        renderer.setSize(width, height);
+        // 背景の色を設定
+        renderer.setClearColor(0x00ffff);
+
+        // シーンを作成
+        const scene = new THREE.Scene();
+
+        // カメラを作成
+        const camera = new THREE.PerspectiveCamera(45, width / height);
+        // カメラの初期座標を設定
+        camera.position.set(0, 0, 5);
+
+        // カメラコントローラーを作成
+        const controls = new THREE.OrbitControls(camera, renderer.domElement); 
+        
+        // 平面を作成
+        var planeGeometry = new THREE.PlaneGeometry(3, 3, 10, 10); //縦、横、分割数、分割数
+        var planeMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+        var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+        plane.rotation.set(-Math.PI/2, 0, 0);
+        plane.position.set(0, 0, 0);
+        scene.add(plane);
+        
+        // 箱を作成
+        var geometry = new THREE.BoxBufferGeometry(0.7, 0.7, 0.7);
+        var textureLoader = new THREE.TextureLoader();
+        var texture = textureLoader.load("hatena.png");
+        var material_box = new THREE.MeshStandardMaterial({ map: texture });
+        var box = new THREE.Mesh(geometry, material_box);
+        box.position.set(0, 1, 0); //位置を指定
+        scene.add(box);
+        
+        // 平行光源1
+        var directionalLight1 = new THREE.DirectionalLight(0xffffff);
+        directionalLight1.position.set(10, 10, 10);
+        // シーンに追加
+        scene.add(directionalLight1);
+        // 平行光源2
+        var directionalLight2 = new THREE.DirectionalLight(0x888888);
+        directionalLight2.position.set(-10, -10, 10);
+        // シーンに追加
+        scene.add(directionalLight2);
+
+        // helper
+        const gridHelper = new THREE.GridHelper(2, 10); // size, step
+        scene.add(gridHelper);
+        const axisHelper = new THREE.AxisHelper(2); //軸の長さ　X：赤、Y：緑、z：青
+        scene.add(axisHelper);
+
+        // 星をスプライトで作成
+        var textureLoader = new THREE.TextureLoader();  
+        var texture = textureLoader.load("star.png");
+        const material = new THREE.SpriteMaterial({ map: texture });
+
+        // 星位置
+        const sprite1 = new THREE.Sprite(material);
+        sprite1.scale.set(0.5, 0.8, 0.5);
+        sprite1.position.set(0, 1.5, 0); //位置を指定
+        scene.add(sprite1);
+
+        update();
+
+        // 毎フレーム時に実行されるループイベントです
+        function update() {
+          // レンダリング
+          renderer.render(scene, camera);
+          requestAnimationFrame(update);
+        }
+      }
+    </script>
+</body>
+</html>
